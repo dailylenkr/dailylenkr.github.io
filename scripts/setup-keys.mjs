@@ -13,7 +13,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dir = path.join(root, 'data/keys');
 const pw = process.env.SITE_PASSWORD;
 const oldPw = process.env.SITE_PASSWORD_OLD;
-if (!pw || pw.length < 12) { console.error('SITE_PASSWORD secret missing or shorter than 12 characters.'); process.exit(1); }
+if (!pw || pw.length < 8) { console.error('SITE_PASSWORD secret missing or shorter than 8 characters.'); process.exit(1); }
 
 const exists = await access(path.join(dir, 'private.json')).then(() => true, () => false);
 await mkdir(dir, { recursive: true });

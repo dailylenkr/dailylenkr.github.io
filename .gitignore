@@ -1,0 +1,6 @@
+node_modules/
+# Plain (unencrypted) data must never be committed
+*.plain.json
+plain/
+tmp/
+.DS_Store

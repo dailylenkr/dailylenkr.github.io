@@ -1,0 +1,10 @@
+{
+  "name": "dailylenkr",
+  "private": true,
+  "type": "module",
+  "description": "Daily Lenovo briefing: encrypted static site + mail",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "nodemailer": "6.9.16"
+  }
+}

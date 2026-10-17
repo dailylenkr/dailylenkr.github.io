@@ -1,0 +1,50 @@
+{
+  "updated": "2026-10-17",
+  "latest_period": "FY26/27 1Q",
+  "unit": "USD millions",
+  "kpis": [
+    { "label": "최근 분기 매출", "value": "269억 달러", "delta": "+43% YoY", "note": "FY26/27 1Q" },
+    { "label": "최근 분기 영업이익", "value": "0.2억 달러", "delta": "-98% YoY", "note": "조정 순이익 10.8억 달러(+176%)" },
+    { "label": "ISG 분기 매출", "value": "85억 달러", "delta": "+98% YoY", "note": "영업이익률 9.1%" },
+    { "label": "SSG 분기 매출", "value": "29억 달러", "delta": "+28% YoY", "note": "영업이익률 24.2%" }
+  ],
+  "annual": [
+    { "fy": "FY06/07", "revenue": 13978, "op": 161 },
+    { "fy": "FY07/08", "revenue": 16352, "op": 499 },
+    { "fy": "FY08/09", "revenue": 14901, "op": -192 },
+    { "fy": "FY09/10", "revenue": 16605, "op": 219 },
+    { "fy": "FY10/11", "revenue": 21594, "op": 382 },
+    { "fy": "FY11/12", "revenue": 29574, "op": 584 },
+    { "fy": "FY12/13", "revenue": 33873, "op": 800 },
+    { "fy": "FY13/14", "revenue": 38707, "op": 1052 },
+    { "fy": "FY14/15", "revenue": 46296, "op": 1109 },
+    { "fy": "FY15/16", "revenue": 44912, "op": -62 },
+    { "fy": "FY16/17", "revenue": 43035, "op": 672 },
+    { "fy": "FY17/18", "revenue": 45350, "op": 387 },
+    { "fy": "FY18/19", "revenue": 51038, "op": 1178 },
+    { "fy": "FY19/20", "revenue": 50716, "op": 1439 },
+    { "fy": "FY20/21", "revenue": 60742, "op": 2180 },
+    { "fy": "FY21/22", "revenue": 71618, "op": 3081 },
+    { "fy": "FY22/23", "revenue": 61947, "op": 2669 },
+    { "fy": "FY23/24", "revenue": 56864, "op": 2006 },
+    { "fy": "FY24/25", "revenue": 69077, "op": 2164 },
+    { "fy": "FY25/26", "revenue": 83075, "op": 3262 }
+  ],
+  "annual_note": "FY06/07(미국 달러 기준 공시 첫해)부터. 영업이익은 연결 손익계산서 기준이며, 각 연도 실적 공시의 최신(재작성) 수치를 사용했습니다.",
+  "segments": [
+    { "period": "FY20/21", "type": "FY", "IDG": { "rev": 53007, "op": 3744 }, "ISG": { "rev": 6301, "op": -130 }, "SSG": { "rev": 4193, "op": 855 } },
+    { "period": "FY21/22", "type": "FY", "IDG": { "rev": 62310, "op": 4738 }, "ISG": { "rev": 7140, "op": 7 }, "SSG": { "rev": 5442, "op": 1195 } },
+    { "period": "FY22/23", "type": "FY", "IDG": { "rev": 49371, "op": 3598 }, "ISG": { "rev": 9756, "op": 98 }, "SSG": { "rev": 6663, "op": 1392 } },
+    { "period": "FY23/24", "type": "FY", "IDG": { "rev": 44599, "op": 3181 }, "ISG": { "rev": 8922, "op": -248 }, "SSG": { "rev": 7472, "op": 1545 } },
+    { "period": "FY24/25", "type": "FY", "IDG": { "rev": 50534, "op": 3623 }, "ISG": { "rev": 14523, "op": -69 }, "SSG": { "rev": 8457, "op": 1785 } },
+    { "period": "FY25/26", "type": "FY", "IDG": { "rev": 58935, "op": 4220 }, "ISG": { "rev": 19188, "op": 73 }, "SSG": { "rev": 10028, "op": 2241 } },
+    { "period": "FY25/26 4Q", "type": "Q", "IDG": { "rev": 14614, "op": 1015 }, "ISG": { "rev": 5635, "op": 202 }, "SSG": { "rev": 2563, "op": 573 } },
+    { "period": "FY26/27 1Q", "type": "Q", "IDG": { "rev": 17100, "op": null }, "ISG": { "rev": 8500, "op": 777 }, "SSG": { "rev": 2900, "op": 697 } }
+  ],
+  "segment_note": "사업부 영업이익은 공시된 사업부 영업이익(본사 비용 등 미배분 항목 제외 전)이라 합계가 그룹 영업이익과 다릅니다. 사업부 구분 비교치는 FY20/21부터 공시됨.",
+  "sources": [
+    { "label": "Lenovo 연간 실적 공시 (FY06/07–FY25/26)", "url": "https://investor.lenovo.com/en/financial/results.php" },
+    { "label": "FY25/26 연간 실적 발표", "url": "https://doc.irasia.com/listco/hk/lenovo/annual/2026/res.pdf" },
+    { "label": "FY26/27 1Q 보도자료", "url": "https://investor.lenovo.com/en/financial/results/press_2627_q1.pdf" }
+  ]
+}

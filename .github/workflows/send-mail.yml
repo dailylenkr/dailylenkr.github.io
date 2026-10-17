@@ -1,0 +1,37 @@
+name: Send daily mail
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/manifest.json'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to send (YYYY-MM-DD). Empty = newest.'
+        required: false
+
+concurrency:
+  group: send-mail
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  mail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund --silent
+      - name: Send mail (content is never printed)
+        env:
+          SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_DATE: ${{ github.event.inputs.date }}
+        run: node scripts/send-mail.mjs

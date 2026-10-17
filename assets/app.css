@@ -157,6 +157,9 @@ td.num, th.num { text-align: right; white-space: nowrap; }
 .chart .val { fill: var(--ink2); }
 .tip { font-size: 12px; color: var(--muted); margin-top: 8px; }
 .sec > .tip { padding: 0 24px 16px; }
+.annual-tbl { margin: 16px -24px -22px; border-top: 1px solid var(--line); max-height: 420px; overflow-y: auto; }
+.annual-tbl th { position: sticky; top: 0; }
+@media (max-width: 760px) { .annual-tbl { margin: 12px -16px -16px; } }
 .note { font-size: 12px; color: var(--muted); }
 select { font: inherit; font-size: 14px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
 

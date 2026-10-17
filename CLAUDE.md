@@ -10,10 +10,10 @@ The owner reads it from a corporate network, so the security rules below are har
 3. **The site makes zero external requests.** No CDNs, web fonts, analytics, images from other hosts, iframes or inline scripts. Keep the CSP in `index.html`. Links to sources open only on click, with `rel="noopener noreferrer"` and `referrerpolicy="no-referrer"`. No cookies, localStorage, sessionStorage, IndexedDB or service workers.
 4. Do not change the key files (`data/keys/*`) except through the "Set up or change password" workflow.
 
-## Daily procedure (run by the scheduled task, ~06:20 KST)
+## Daily procedure (run by the scheduled task, weekdays ~06:20 KST)
 
 1. `cd` into the repo, `git pull --ff-only`. Today = current date in Asia/Seoul (`TZ=Asia/Seoul date +%F`).
-2. **Collect** news from roughly the last 24–30 hours with WebSearch / WebFetch. Search in English, Chinese and Korean. Suggested queries (adapt as needed):
+2. **Collect** news with WebSearch / WebFetch from roughly the last 24–30 hours — **on Mondays, from Friday morning to now (about 72 hours) so the weekend is covered** in Monday's single briefing. Search in English, Chinese and Korean. Suggested queries (adapt as needed):
    - EN: `Lenovo`, `Lenovo Group earnings`, `Lenovo ISG AI server`, `Lenovo Infrastructure Solutions`, `Lenovo PC shipments`, `Motorola smartphone Lenovo`, `Lenovo memory prices`, `Yang Yuanqing`
    - ZH: `联想集团`, `联想 服务器`, `联想 AI服务器`, `联想 存储`, `联想 内存 涨价`, `杨元庆`, `摩托罗拉 联想`, `联想 PC 出货`
      (Do not search `联想` alone: it is also an ordinary word meaning "to associate".)

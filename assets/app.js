@@ -431,7 +431,17 @@ async function viewCompany() {
       h('h2', null, '연도별 매출·영업이익 ', h('span', { class: 'sub' }, `${annual[0].fy} – ${annual[annual.length - 1].fy}`)),
       h('div', { class: 'legend' }, h('span', null, h('i', { class: 'lg-bar' }), '매출 (억 달러)'), h('span', null, h('i', { class: 'lg-line' }), '영업이익')),
       annualChart(annual),
-      h('div', { class: 'tip' }, '막대·점에 마우스를 올리면 수치가 보입니다. ', c.annual_note || '')),
+      h('div', { class: 'tip' }, '막대·점에 마우스를 올리면 수치가 보입니다. ', c.annual_note || ''),
+      h('div', { class: 'tbl-wrap annual-tbl' }, h('table', null,
+        h('thead', null, h('tr', null, h('th', null, '연도'), ['매출', '매출 YoY', '영업이익'].map((t) => h('th', { class: 'num' }, t)))),
+        h('tbody', null, annual.map((r, i) => {
+          const g = growth(r.revenue, annual[i - 1]?.revenue);
+          return h('tr', null,
+            h('td', { class: 'mono' }, r.fy),
+            h('td', { class: 'num' }, usd(r.revenue)),
+            h('td', { class: 'num' }, h('span', { class: g == null ? 'muted' : g >= 0 ? 'dir up' : 'dir down' }, pct(g))),
+            h('td', { class: 'num' }, h('span', { class: r.op < 0 ? 'dir down' : '' }, usd(r.op))));
+        }).reverse())))),
     h('div', { class: 'grid2' },
       segRows.length > 0 && h('section', { class: 'card' },
         h('h2', null, `${segRows === qsegs ? '분기별' : '연도별'} 사업부 구성 `, h('span', { class: 'sub' }, `${segRows[0].period} 부터`)),

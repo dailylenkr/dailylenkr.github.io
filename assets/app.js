@@ -194,16 +194,15 @@ function itemCard(it) {
       it.importance === 3 && h('span', { class: 'imp-dot' }, '● 주요'),
       mem && h('span', { class: 'badge-mem' }, '메모리'),
       mem && h('span', { class: 'mem-prod' }, mem.products.map((p) => PROD[p] || p).join(' · '))),
-    h('h3', null, it.title_ko),
+    h('h3', null, ext(it.url, it.title_ko, 'title-link')),
     it.lang !== 'ko' && it.title_orig && h('div', { class: 'orig', lang: it.lang === 'zh' ? 'zh' : 'en' }, it.title_orig),
     h('p', null, it.summary_ko),
     mem && h('div', { class: 'mem-note' }, `메모리 관점 · ${IMPACT[mem.impact]?.[0] || ''} — ${mem.note_ko}`),
     h('div', { class: 'meta' },
-      h('span', null, it.source),
       h('span', { class: 'lang', title: TIER[it.tier] }, LANG[it.lang] || it.lang),
       it.published && h('span', null, fmtPub(it.published)),
       (it.tags || []).map((t) => h('span', { class: 'tag' }, t)),
-      ext(it.url, '원문 ↗', 'src')),
+      ext(it.url, `${it.source} 원문 ↗`, 'src')),
     it.also?.length && h('div', { class: 'also' }, '같은 소식: ', it.also.map((a, i) => [i ? ', ' : '', ext(a.url, a.source)])),
   );
 }

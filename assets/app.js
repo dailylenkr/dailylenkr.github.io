@@ -167,7 +167,6 @@ function shell(content) {
     )),
     h('div', { class: 'wrap' }, content,
       h('div', { class: 'foot' }, '공개 뉴스·공시만으로 매일 자동 수집·요약한 개인 브리핑입니다. 레노버와 무관하며, 원문 저작권은 각 매체에 있습니다. 이 페이지는 외부 서버에 어떤 요청도 보내지 않고, 기기에 아무것도 저장하지 않습니다. 30분간 사용하지 않으면 자동으로 잠깁니다.')),
-    h('nav', { class: 'bottom-nav', 'aria-label': '하단 메뉴' }, nav(true)),
   );
 }
 const loading = () => h('div', { class: 'loading' }, '불러오는 중…');
@@ -180,6 +179,7 @@ async function render() {
       : S.view === 'archive' ? await viewArchive()
       : await viewToday();
     app.querySelector('.wrap').firstChild.replaceWith(content);
+    app.querySelectorAll('.annual-tbl, .chart-scroll').forEach((el) => { el.scrollLeft = el.scrollWidth; });
   } catch (e) {
     app.querySelector('.wrap').firstChild.replaceWith(h('div', { class: 'card empty' }, '데이터를 불러오지 못했습니다.'));
     console.error(e);
@@ -405,6 +405,30 @@ function segmentChart(rows, mode) {
   return svg;
 }
 
+// Years run left→right like the chart; rows are the metrics. Scrolls sideways, opens at the latest year.
+function annualTable(annual) {
+  const yoyCell = (cur, prev) => {
+    if (cur == null || prev == null) return h('td', { class: 'num muted' }, '—');
+    if (prev < 0 && cur >= 0) return h('td', { class: 'num' }, h('span', { class: 'dir up' }, '흑자전환'));
+    if (prev >= 0 && cur < 0) return h('td', { class: 'num' }, h('span', { class: 'dir down' }, '적자전환'));
+    if (prev < 0 && cur < 0) return h('td', { class: 'num' }, h('span', { class: 'dir down' }, '적자지속'));
+    const g = growth(cur, prev);
+    return h('td', { class: 'num' }, h('span', { class: g >= 0 ? 'dir up' : 'dir down' }, pct(g)));
+  };
+  const valCell = (v) => h('td', { class: 'num' }, h('span', { class: v < 0 ? 'dir down' : '' }, usd(v)));
+  const rows = [
+    ['매출', (r) => valCell(r.revenue)],
+    ['매출 YoY', (r, p) => yoyCell(r.revenue, p?.revenue)],
+    ['영업이익', (r) => valCell(r.op)],
+    ['영업이익 YoY', (r, p) => yoyCell(r.op, p?.op)],
+  ];
+  return h('div', { class: 'tbl-wrap annual-tbl' }, h('table', null,
+    h('thead', null, h('tr', null, h('th', { class: 'rowh' }, '연도'), annual.map((r) => h('th', { class: 'num mono' }, r.fy)))),
+    h('tbody', null, rows.map(([label, cell], ri) => h('tr', { class: ri % 2 ? 'yoy' : '' },
+      h('th', { class: 'rowh', scope: 'row' }, label),
+      annual.map((r, i) => cell(r, annual[i - 1])))))));
+}
+
 async function viewCompany() {
   if (S.company === undefined) S.company = await loadEncrypted('data/company.enc.json').catch(() => null);
   const c = S.company;
@@ -429,18 +453,9 @@ async function viewCompany() {
     annual.length > 0 && h('section', { class: 'card' },
       h('h2', null, '연도별 매출·영업이익 ', h('span', { class: 'sub' }, `${annual[0].fy} – ${annual[annual.length - 1].fy}`)),
       h('div', { class: 'legend' }, h('span', null, h('i', { class: 'lg-bar' }), '매출 (억 달러)'), h('span', null, h('i', { class: 'lg-line' }), '영업이익')),
-      annualChart(annual),
+      h('div', { class: 'chart-scroll' }, annualChart(annual)),
       h('div', { class: 'tip' }, '막대·점에 마우스를 올리면 수치가 보입니다. ', c.annual_note || ''),
-      h('div', { class: 'tbl-wrap annual-tbl' }, h('table', null,
-        h('thead', null, h('tr', null, h('th', null, '연도'), ['매출', '매출 YoY', '영업이익'].map((t) => h('th', { class: 'num' }, t)))),
-        h('tbody', null, annual.map((r, i) => {
-          const g = growth(r.revenue, annual[i - 1]?.revenue);
-          return h('tr', null,
-            h('td', { class: 'mono' }, r.fy),
-            h('td', { class: 'num' }, usd(r.revenue)),
-            h('td', { class: 'num' }, h('span', { class: g == null ? 'muted' : g >= 0 ? 'dir up' : 'dir down' }, pct(g))),
-            h('td', { class: 'num' }, h('span', { class: r.op < 0 ? 'dir down' : '' }, usd(r.op))));
-        }).reverse())))),
+      annualTable(annual)),
     h('div', { class: 'grid2' },
       segRows.length > 0 && h('section', { class: 'card' },
         h('h2', null, `${segRows === qsegs ? '분기별' : '연도별'} 사업부 구성 `, h('span', { class: 'sub' }, `${segRows[0].period} 부터`)),

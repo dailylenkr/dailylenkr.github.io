@@ -18,7 +18,14 @@ The owner reads it from a corporate network, so the security rules below are har
    - ZH: `联想集团`, `联想 服务器`, `联想 AI服务器`, `联想 存储`, `联想 内存 涨价`, `杨元庆`, `摩托罗拉 联想`, `联想 PC 出货`
      (Do not search `联想` alone: it is also an ordinary word meaning "to associate".)
    - KO: `레노버`, `레노버 서버`, `레노버 메모리`
-   - Official pages to check directly: Lenovo StoryHub / news.lenovo.com, investor.lenovo.com (results, announcements), HKEXnews announcements for stock code 992, Motorola newsroom.
+   - **Outlet-targeted searches (run every day, in addition to the general ones)** — use WebSearch `allowed_domains`:
+     1. Global majors: `Lenovo` with `["bloomberg.com","cnbc.com","scmp.com","asia.nikkei.com","ft.com"]`
+     2. Chinese business press: `联想集团` with `["stcn.com","21jingji.com","jiemian.com","yicai.com","caixin.com","36kr.com","cls.cn"]`
+     3. Research firms: `Lenovo` with `["idc.com","gartner.com","counterpointresearch.com","trendforce.com","omdia.tech.informa.com","canalys.com"]`
+     4. Korean/trade press: `레노버` with `["etnews.com","thelec.kr","digitimes.com","jiwei.com","yna.co.kr"]`
+     5. Official: `Lenovo` with `["news.lenovo.com","investor.lenovo.com","motorola.com","businesswire.com","prnewswire.com"]`
+     Known limits in this environment: **reuters.com cannot be searched or fetched** — include Reuters stories only via another outlet that cites them ("로이터에 따르면 …", url = the citing article). **cls.cn (财联社) pages do not render** — use 财联社 only if the same story is readable elsewhere (use that article as `url`; mention 财联社 in the summary if it broke the news). If a domain filter is rejected, retry that group without the failing domain.
+   - Official pages to check directly: Lenovo StoryHub / news.lenovo.com, investor.lenovo.com (results and announcements list: `https://investor.lenovo.com/en/ir/announcements.php` or the results page), Motorola newsroom. HKEXnews (stock code 992) PDFs often fail to load here — check the same filing on investor.lenovo.com or the mirror `doc.irasia.com/listco/hk/lenovo/` and link whichever page actually opened.
 3. **Source tiers** (`tier` field) — prefer higher tiers; when several outlets report the same story keep ONE item, use the best source as `url`/`source` and list the others in `also`:
    - 1 official: HKEX filings, Lenovo IR, Lenovo/Motorola newsroom, Business Wire/PR Newswire releases by Lenovo
    - 2 major media: Reuters, Bloomberg, Nikkei Asia, SCMP, CNBC, FT; 财联社, 第一财经, 21世纪经济报道, 界面新闻, 证券时报, 财新, 36氪; 연합뉴스

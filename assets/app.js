@@ -66,6 +66,8 @@ function usd(m) {
   const eok = m / 100;
   return `${eok.toLocaleString('ko-KR', { maximumFractionDigits: Math.abs(eok) < 100 ? 1 : 0 })}억 달러`;
 }
+// plain number in 억$ (values are USD millions)
+const eok = (m, d = 0) => (m == null || isNaN(m) ? '—' : (m / 100).toLocaleString('ko-KR', { minimumFractionDigits: d, maximumFractionDigits: d }));
 const pct = (v, digits = 1) => (v == null || !isFinite(v) ? '—' : `${v > 0 ? '+' : ''}${v.toFixed(digits)}%`);
 const growth = (a, b) => (a == null || b == null || !b ? null : ((a - b) / Math.abs(b)) * 100);
 
@@ -342,8 +344,9 @@ async function viewMemory() {
 function svgEl(w, hgt, label) { return h('svg', { class: 'chart', viewBox: `0 0 ${w} ${hgt}`, role: 'img', 'aria-label': label }); }
 
 function annualChart(rows) {
-  const W = 1200, H = 300, L = 56, R = 16, T = 20, B = 40;
-  const max = Math.max(...rows.map((r) => r.revenue || 0)) * 1.1 || 1;
+  const W = 1200, H = 310, L = 56, R = 16, T = 36, B = 40;
+  const STEP = 20000; // 200억$ grid
+  const max = Math.max(STEP, Math.ceil(Math.max(...rows.map((r) => r.revenue || 0)) / STEP) * STEP);
   const opVals = rows.map((r) => r.op).filter((v) => v != null);
   const opMax = Math.max(...opVals, 1) * 1.25;
   const opMin = Math.min(0, ...opVals);
@@ -351,10 +354,10 @@ function annualChart(rows) {
   const bw = (W - L - R) / rows.length;
   const y = (v) => T + (H - T - B) * (1 - v / max);
   const yo = (v) => T + (H - T - B) * (1 - (v - opMin) / (opMax - opMin));
-  [0, 0.25, 0.5, 0.75, 1].forEach((f) => {
-    svg.append(h('line', { x1: L, x2: W - R, y1: y(max * f / 1.1), y2: y(max * f / 1.1), stroke: '#EEF0F2' }));
-    svg.append(h('text', { x: L - 6, y: y(max * f / 1.1) + 4, 'text-anchor': 'end' }, Math.round(max * f / 1.1 / 100).toLocaleString('ko-KR')));
-  });
+  for (let v = 0; v <= max; v += STEP) {
+    svg.append(h('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: '#EEF0F2' }));
+    svg.append(h('text', { x: L - 6, y: y(v) + 4, 'text-anchor': 'end' }, (v / 100).toLocaleString('ko-KR')));
+  }
   const step = Math.ceil(rows.length / 12);
   const pts = [];
   rows.forEach((r, i) => {
@@ -415,15 +418,15 @@ function annualTable(annual) {
     const g = growth(cur, prev);
     return h('td', { class: 'num' }, h('span', { class: g >= 0 ? 'dir up' : 'dir down' }, pct(g)));
   };
-  const valCell = (v) => h('td', { class: 'num' }, h('span', { class: v < 0 ? 'dir down' : '' }, usd(v)));
+  const valCell = (v, d) => h('td', { class: 'num' }, h('span', { class: v < 0 ? 'dir down' : '' }, eok(v, d)));
   const rows = [
-    ['매출', (r) => valCell(r.revenue)],
+    ['매출', (r) => valCell(r.revenue, 0)],
     ['매출 YoY', (r, p) => yoyCell(r.revenue, p?.revenue)],
-    ['영업이익', (r) => valCell(r.op)],
+    ['영업이익', (r) => valCell(r.op, 1)],
     ['영업이익 YoY', (r, p) => yoyCell(r.op, p?.op)],
   ];
   return h('div', { class: 'tbl-wrap annual-tbl' }, h('table', null,
-    h('thead', null, h('tr', null, h('th', { class: 'rowh' }, '연도'), annual.map((r) => h('th', { class: 'num mono' }, r.fy)))),
+    h('thead', null, h('tr', null, h('th', { class: 'rowh' }, '단위: 억$'), annual.map((r) => h('th', { class: 'num mono' }, r.fy)))),
     h('tbody', null, rows.map(([label, cell], ri) => h('tr', { class: ri % 2 ? 'yoy' : '' },
       h('th', { class: 'rowh', scope: 'row' }, label),
       annual.map((r, i) => cell(r, annual[i - 1])))))));
@@ -452,7 +455,7 @@ async function viewCompany() {
       h('div', { class: 'd' }, k.delta && h('span', { class: k.delta.startsWith('-') ? 'neg' : 'pos' }, k.delta), k.note && ` · ${k.note}`)))),
     annual.length > 0 && h('section', { class: 'card' },
       h('h2', null, '연도별 매출·영업이익 ', h('span', { class: 'sub' }, `${annual[0].fy} – ${annual[annual.length - 1].fy}`)),
-      h('div', { class: 'legend' }, h('span', null, h('i', { class: 'lg-bar' }), '매출 (억 달러)'), h('span', null, h('i', { class: 'lg-line' }), '영업이익')),
+      h('div', { class: 'legend' }, h('span', null, h('i', { class: 'lg-bar' }), '매출 (억$)'), h('span', null, h('i', { class: 'lg-line' }), '영업이익')),
       h('div', { class: 'chart-scroll' }, annualChart(annual)),
       h('div', { class: 'tip' }, '막대·점에 마우스를 올리면 수치가 보입니다. ', c.annual_note || ''),
       annualTable(annual)),
@@ -464,21 +467,21 @@ async function viewCompany() {
           h('div', { class: 'seg' }, [['rev', '매출'], ['op', '영업이익'], ['share', '매출 비중']].map(([m, l]) =>
             h('button', { type: 'button', 'aria-pressed': String(S.segMode === m), onclick: () => { S.segMode = m; render(); } }, l)))),
         segmentChart(segRows, S.segMode),
-        h('div', { class: 'tip' }, '단위: 억 달러')),
+        h('div', { class: 'tip' }, '단위: 억$')),
       fyRow && h('section', { class: 'sec' },
         h('div', { class: 'sec-h' }, h('h2', null, '사업부별 실적'),
           h('div', { class: 'spacer' }),
           h('select', { 'aria-label': '회계연도', onchange: (e) => { S.fy = e.target.value; render(); } },
             fsegs.map((s) => h('option', { value: s.period, selected: s.period === S.fy }, s.period)))),
         h('div', { class: 'tbl-wrap' }, h('table', null,
-          h('thead', null, h('tr', null, h('th', null, '사업부'), ['매출', 'YoY', '영업이익', '이익률'].map((t) => h('th', { class: 'num' }, t)))),
+          h('thead', null, h('tr', null, h('th', null, '사업부 (억$)'), ['매출', 'YoY', '영업이익', '이익률'].map((t) => h('th', { class: 'num' }, t)))),
           h('tbody', null, ['IDG', 'ISG', 'SSG'].map((b) => {
             const r = fyRow[b] || {};
             const g = growth(r.rev, prevRow?.[b]?.rev);
             return h('tr', null, h('td', null, h('span', { class: `sq ${b}` }), ' ', b),
-              h('td', { class: 'num' }, usd(r.rev)),
+              h('td', { class: 'num' }, eok(r.rev, 0)),
               h('td', { class: 'num' }, h('span', { class: g == null ? '' : g >= 0 ? 'dir up' : 'dir down' }, pct(g))),
-              h('td', { class: 'num' }, usd(r.op)),
+              h('td', { class: 'num' }, h('span', { class: r.op < 0 ? 'dir down' : '' }, eok(r.op, 1))),
               h('td', { class: 'num' }, r.rev && r.op != null ? `${(r.op / r.rev * 100).toFixed(1)}%` : '—'));
           })))),
         h('div', { class: 'tip', style: null }, ' ', c.segment_note || '사업부 영업이익은 레노버가 공시한 사업부 영업이익 기준입니다.'))),

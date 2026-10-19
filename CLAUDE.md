@@ -52,6 +52,17 @@ The owner reads it from a corporate network, so the security rules below are har
 14. **Commit & push**: `git add data/days data/manifest.json data/seen.json && git commit -m "Briefing <date>" && git push`. The push triggers the mail workflow. If there was genuinely no news, still publish a day with `items: []` and signals `none` so the mail says so.
 15. Delete `/tmp/dailylenkr/`.
 
+## China memory tab (번외: CXMT · YMTC only)
+
+**Daily** (same run, after the Lenovo briefing, same consistency rules 6/6a and same Hard rules):
+1. Search the last 24–30 hours (Mondays ~72h): EN `CXMT`, `ChangXin Memory`, `YMTC`, `Yangtze Memory`; ZH `长鑫存储`, `长江存储`; KO `CXMT`, `YMTC`; plus `CXMT YMTC` with `["trendforce.com","counterpointresearch.com","digitimes.com","scmp.com","bloomberg.com","jiemian.com","stcn.com","yicai.com","thelec.kr","etnews.com"]`.
+2. Write `/tmp/dailylenkr/<date>.cn.json`: `{ "date", "items": [ { id, company: "CXMT"|"YMTC", category: tech|capacity|customer|regulation|finance|litigation, title_ko, title_orig, lang, summary_ko, source, tier, url, published ("YYYY-MM-DD…"), importance 1-3, lenovo: true|false, also?: [...], memory?: {products, impact, note_ko} } ] }`.
+   - `lenovo: true` only when the article itself names Lenovo (e.g. Lenovo adopting CXMT/YMTC parts). Give such items a `memory` object too — they are then also listed in the 메모리 영향 tab.
+   - Mark unconfirmed claims as such in the summary ("…보도, 회사 미확인"). Keep estimates (TrendForce/Counterpoint) labelled as estimates.
+3. `node scripts/publish-cn.mjs /tmp/dailylenkr/<date>.cn.json` (empty `items` is fine; skip the file entirely if nothing was found), then include `data/cn-days` in the commit.
+
+**Weekly (Mondays)**: refresh `company/cnmem.json` (overview, roadmap, metrics, timeline) from what you verified this week — add new roadmap steps, new quarterly share figures (`series: "share"`, `num` = number, same metric name per series), and new timeline events (newest first). Every row needs `basis` (company | estimate | report), `source` and an opened `url`. Update `updated`, run `node scripts/publish-cnmem.mjs`, and commit `company/cnmem.json data/cnmem.enc.json`. (Like `company/financials.json`, this file holds only public facts with sources, so it stays unencrypted to remain editable.)
+
 ## Day JSON schema
 
 ```json

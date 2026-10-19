@@ -1,0 +1,80 @@
+{
+  "updated": "2026-10-19",
+  "companies": {
+    "CXMT": {
+      "name": "CXMT",
+      "name_zh": "长鑫存储",
+      "product_line": "DRAM",
+      "overview": [
+        { "k": "본사", "v": "중국 허페이(안후이성)" },
+        { "k": "설립", "v": "2016년 5월" },
+        { "k": "주력", "v": "범용 DRAM — DDR4·DDR5, LPDDR4X·LPDDR5·LPDDR5X, 모듈" },
+        { "k": "상장", "v": "2026년 7월 27일 상하이 STAR마켓 상장(688825), 공모가 8.66위안" },
+        { "k": "주요 주주", "v": "Qinghui Jidian 21.67%, ChangXin Integrated 11.71%, 국가 반도체 산업투자기금 2기 8.73% 등 (투자설명서). 지배주주 없음" },
+        { "k": "규제", "v": "미국 정부 조달 금지(2022년 국방수권법), 2026년 6월 미 국방부 '중국 군사기업' 목록 추가 — 회사는 지정에 이의 제기 중" },
+        { "k": "실적", "v": "2026년 상반기 매출 1,503억 위안·순이익 776억 위안 (반기보고서 수치, Roic News 보도)" }
+      ],
+      "roadmap": [
+        { "product": "LPDDR6", "stage": "양산 발표 (최대 12,800Mbps, 최대 16GB)", "when": "2026-08-29", "basis": "company", "source": "EqualOcean", "url": "https://equalocean.com/news/2026083122151-cxmt-claims-first-mass-production-lpddr6-xiaomi-18-fold-as-launch-customer" },
+        { "product": "5세대 DRAM 플랫폼(G5)", "stage": "양산 발표", "when": "2026-09", "basis": "company", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/10/12/news-cxmt-accelerates-4f%C2%B2-dram-push-eyes-year-end-server-ddr5-rdimm-launch/" },
+        { "product": "서버 DDR5 RDIMM (4F² 기반)", "stage": "2026년 말 출시 계획 — 4F²는 일부만 적용될 수 있다는 보도도 있음", "when": "2026-10-10 발표", "basis": "company", "source": "TrendForce (Yicai 인용)", "url": "https://www.trendforce.com/news/2026/10/12/news-cxmt-accelerates-4f%C2%B2-dram-push-eyes-year-end-server-ddr5-rdimm-launch/" },
+        { "product": "DDR5", "stage": "AMD 플랫폼에서 9,000MT/s 이상 동작 보도", "when": "2026-08", "basis": "report", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/08/18/news-cxmt-ddr5-reportedly-tops-9000-mts-on-amd-platform-narrowing-performance-gap-with-global-leaders/" },
+        { "product": "HBM3E", "stage": "소규모 생산 시작 보도 (회사 미확인)", "when": "2026-08", "basis": "report", "source": "Roic News (The Information 인용)", "url": "https://www.roic.ai/news/chinas-cxmt-starts-small-scale-hbm3e-production-marking-milestone-for-domestic-ai-supply-chain-08-31-2026" }
+      ],
+      "metrics": [
+        { "period": "1Q26", "metric": "DRAM 매출 점유율", "value": "7.6% (4위)", "num": 7.6, "series": "share", "basis": "estimate", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/07/27/news-cxmts-471-star-debut-makes-it-chinas-top-listed-firm-reshaping-global-memory-dynamics/" },
+        { "period": "2Q26", "metric": "DRAM 매출 점유율", "value": "9.5% (4위)", "num": 9.5, "series": "share", "basis": "estimate", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/09/24/news-cxmt-ymtc-ramp-memory-capacity-but-chinas-ai-cloud-boom-could-soak-up-new-supply-through-2027/" },
+        { "period": "현재", "metric": "월 웨이퍼 생산능력", "value": "약 32만 장", "basis": "report", "source": "TrendForce (Commercial Times 인용)", "url": "https://www.trendforce.com/news/2026/09/24/news-cxmt-ymtc-ramp-memory-capacity-but-chinas-ai-cloud-boom-could-soak-up-new-supply-through-2027/" },
+        { "period": "2027년 목표", "metric": "월 웨이퍼 생산능력", "value": "약 42만 장", "basis": "report", "source": "TrendForce (Commercial Times 인용)", "url": "https://www.trendforce.com/news/2026/09/24/news-cxmt-ymtc-ramp-memory-capacity-but-chinas-ai-cloud-boom-could-soak-up-new-supply-through-2027/" }
+      ],
+      "timeline": [
+        { "date": "2026-10-10", "text": "차오칸위 사장이 4F² DRAM 구조 공개, 2026년 말 4F² 기반 서버 DDR5 RDIMM 출시 계획 발표", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/10/12/news-cxmt-accelerates-4f%C2%B2-dram-push-eyes-year-end-server-ddr5-rdimm-launch/" },
+        { "date": "2026-08-29", "text": "LPDDR6 양산 발표, 샤오미 18 폴드에 첫 탑재", "source": "EqualOcean", "url": "https://equalocean.com/news/2026083122151-cxmt-claims-first-mass-production-lpddr6-xiaomi-18-fold-as-launch-customer" },
+        { "date": "2026-08", "text": "HP·에이수스·에이서가 노트북에 CXMT DRAM 제한적 채택 보도 (닛케이), 베이징 두 번째 12인치 팹 검토 보도 (로이터)", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/08/04/news-cxmt-reportedly-eyes-second-beijing-12-inch-dram-fab-hp-asus-and-acer-said-to-begin-limited-use/" },
+        { "date": "2026-07-27", "text": "상하이 STAR마켓 상장(688825), 상장 첫날 시가총액 약 3.3조 위안", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/07/27/news-cxmts-471-star-debut-makes-it-chinas-top-listed-firm-reshaping-global-memory-dynamics/" },
+        { "date": "2026-07", "text": "바이트댄스와 70억 달러 이상 5년 공급계약 체결 (로이터 보도)", "source": "TrendForce", "url": "https://www.trendforce.com/news/2026/07/27/news-cxmts-471-star-debut-makes-it-chinas-top-listed-firm-reshaping-global-memory-dynamics/" },
+        { "date": "2026-06", "text": "미 국방부 '중국 군사기업' 목록 추가 / 중국 증감회 IPO 등록 승인(6월 5일)", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/ChangXin_Memory_Technologies" },
+        { "date": "2022-12", "text": "미국 2023 회계연도 국방수권법으로 미 연방정부의 CXMT 칩 구매·사용 금지", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/ChangXin_Memory_Technologies" },
+        { "date": "2016-05", "text": "허페이에서 설립", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/ChangXin_Memory_Technologies" }
+      ]
+    },
+    "YMTC": {
+      "name": "YMTC",
+      "name_zh": "长江存储",
+      "product_line": "NAND",
+      "overview": [
+        { "k": "본사", "v": "중국 우한(후베이성)" },
+        { "k": "설립", "v": "2016년 7월" },
+        { "k": "주력", "v": "3D 낸드(Xtacking 구조), eMMC·UFS, 소비자·기업용 SSD(브랜드 ZhiTai)" },
+        { "k": "상장", "v": "비상장 — 모회사 CCSH의 STAR마켓 IPO 신청이 2026년 8월 21일 접수됨(조달 목표 330억 위안)" },
+        { "k": "주요 주주", "v": "CCSH 100% 보유. 후베이성 정부, 국가 반도체 산업투자기금 등이 투자" },
+        { "k": "규제", "v": "2022년 12월 15일 미 상무부 Entity List 추가. 장비 수출을 겨냥한 미국 MATCH Act 법안에 명시" },
+        { "k": "연구개발", "v": "2023~2025년 R&D 142억 위안, 연구인력 4,796명, 등록 발명특허 5,611건 (투자설명서, Counterpoint 인용)" }
+      ],
+      "roadmap": [
+        { "product": "3D 낸드 300층 이상", "stage": "개발 중", "when": "2025-09 기준", "basis": "report", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "product": "3D 낸드 267층 TLC", "stage": "양산", "when": "2025-09 기준", "basis": "report", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "product": "5세대 TLC 294층(활성 232층, Xtacking 4.0)", "stage": "출하 (공식 발표 없음)", "when": "2025년 초", "basis": "report", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "product": "LPDDR5 DRAM (16Gb, 7,500MT/s)", "stage": "2공장에서 연구개발·시험 중, 양산 계획 없음", "when": "2025-10~", "basis": "company", "source": "Counterpoint (투자설명서 인용)", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" },
+        { "product": "LPDDR5 DRAM (9,600MT/s, 4F² VCT)", "stage": "성능 목표 달성 시 3공장 양산 예정", "when": "미정", "basis": "company", "source": "Counterpoint (투자설명서 인용)", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" },
+        { "product": "LPDDR5 DRAM 시험생산", "stage": "이르면 2026년 말 시작 가능 보도", "when": "2026년 말", "basis": "report", "source": "TrendForce (Commercial Times 인용)", "url": "https://www.trendforce.com/news/2026/09/24/news-cxmt-ymtc-ramp-memory-capacity-but-chinas-ai-cloud-boom-could-soak-up-new-supply-through-2027/" }
+      ],
+      "metrics": [
+        { "period": "1Q25", "metric": "낸드 매출 점유율", "value": "9%", "num": 9, "series": "share", "basis": "estimate", "source": "Counterpoint", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" },
+        { "period": "1Q26", "metric": "낸드 매출 점유율", "value": "14%", "num": 14, "series": "share", "basis": "estimate", "source": "Counterpoint", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" },
+        { "period": "2Q26", "metric": "낸드 출하량 점유율", "value": "16.5% (3위)", "basis": "estimate", "source": "Counterpoint", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" },
+        { "period": "장기 목표", "metric": "월 웨이퍼 생산능력 (DRAM 포함)", "value": "약 50만 장", "basis": "company", "source": "Counterpoint", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" },
+        { "period": "장기 목표", "metric": "세계 낸드 점유율", "value": "20%", "basis": "company", "source": "Counterpoint", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" }
+      ],
+      "timeline": [
+        { "date": "2026-10-13", "text": "2분기 낸드 출하량 기준 세계 3위(점유율 16.5%) — Counterpoint", "source": "Counterpoint", "url": "https://counterpointresearch.com/en/insights/ymtc-files-for-landmark-ipo-after-climbing-to-no-3-in-global-nand-race-with-dram-next" },
+        { "date": "2026-08-21", "text": "모회사 CCSH의 STAR마켓 IPO 신청 접수 (330억 위안)", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "date": "2026-08-13", "text": "YMTC가 마이크론·DCI그룹을 상대로 낸 허위광고 소송 기각", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "date": "2026-04", "text": "우한 3공장 외 추가 팹 2곳 계획 보도. 3공장은 2026년 말 가동, 2027년 월 5만 장 목표 (로이터)", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "date": "2023-11-09", "text": "미국 법원에 마이크론 특허침해(8건) 소송 제기", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "date": "2022-12-15", "text": "미 상무부 Entity List 추가", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" },
+        { "date": "2016-07", "text": "우한에서 설립", "source": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Yangtze_Memory_Technologies" }
+      ]
+    }
+  }
+}

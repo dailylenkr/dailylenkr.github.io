@@ -46,3 +46,29 @@ export function validateDay(d) {
   if (errs.length) throw new Error('Day file invalid:\n - ' + errs.join('\n - '));
   return true;
 }
+
+// China memory (CXMT / YMTC) news for one day.
+export const CN_COMPANIES = ['CXMT', 'YMTC'];
+export const CN_CATEGORIES = ['tech', 'capacity', 'customer', 'regulation', 'finance', 'litigation'];
+export function validateCnDay(d) {
+  const errs = [];
+  const need = (c, m) => { if (!c) errs.push(m); };
+  need(/^\d{4}-\d{2}-\d{2}$/.test(d.date || ''), 'date must be YYYY-MM-DD');
+  need(Array.isArray(d.items), 'items must be an array');
+  (d.items || []).forEach((it, i) => {
+    const p = `items[${i}]`;
+    need(isStr(it.id), `${p}.id`);
+    need(CN_COMPANIES.includes(it.company), `${p}.company must be one of ${CN_COMPANIES}`);
+    need(CN_CATEGORIES.includes(it.category), `${p}.category must be one of ${CN_CATEGORIES}`);
+    need(isStr(it.title_ko) && isStr(it.title_orig), `${p}.title_ko / title_orig`);
+    need(LANGS.includes(it.lang), `${p}.lang`);
+    need(isStr(it.summary_ko), `${p}.summary_ko`);
+    need(isStr(it.source) && isUrl(it.url), `${p}.source / url`);
+    need([1, 2, 3, 4].includes(it.tier), `${p}.tier 1-4`);
+    need(/^\d{4}-\d{2}-\d{2}/.test(it.published || ''), `${p}.published must start with YYYY-MM-DD`);
+    need(typeof it.lenovo === 'boolean', `${p}.lenovo must be true/false`);
+    if (it.also) need(Array.isArray(it.also) && it.also.every((a) => isStr(a.source) && isUrl(a.url)), `${p}.also entries need source and url`);
+  });
+  if (errs.length) throw new Error('China-memory day file invalid:\n - ' + errs.join('\n - '));
+  return true;
+}

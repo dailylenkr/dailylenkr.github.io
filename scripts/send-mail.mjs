@@ -39,11 +39,20 @@ const sections = Object.keys(BG).map((bg) => {
 </div>`).join('');
 }).join('');
 
+let cnHtml = '';
+if ((manifest.cn_days || []).includes(date)) {
+  try {
+    const cn = await decryptJson(JSON.parse(await readFile(path.join(root, `data/cn-days/${date}.enc.json`), 'utf8')), priv);
+    if (cn.items.length) cnHtml = `<h2 style="font-size:16px;margin:28px 0 8px;border-left:4px solid #B3122B;padding-left:8px">중국 메모리 <span style="font-weight:400;color:#5A606B;font-size:13px">CXMT · YMTC</span></h2>` +
+      cn.items.map((it) => `<div style="padding:10px 0;border-bottom:1px solid #EEF0F2"><span style="font-size:11px;font-weight:700;color:#B3122B">${esc(it.company)}</span> <a href="${esc(safeUrl(it.url))}" style="font-size:15px;font-weight:600;color:#15171A;text-decoration:none">${esc(it.title_ko)}</a><div style="font-size:14px;line-height:1.6;color:#3A3F48;margin-top:4px">${esc(it.summary_ko)}</div><div style="font-size:12px;color:#6B7180;margin-top:4px">${esc(it.source)}</div></div>`).join('');
+  } catch { cnHtml = ''; }
+}
 const html = `<div style="font-family:-apple-system,'Segoe UI','Malgun Gothic','Apple SD Gothic Neo',sans-serif;max-width:640px;margin:0 auto;color:#15171A">
 <div style="font-size:12px;color:#B3122B;font-family:Consolas,monospace">${esc(date)}</div>
 <h1 style="font-size:22px;margin:4px 0 16px">데일리 레노버</h1>
 ${day.headline3?.length ? `<div style="background:#15171A;color:#fff;border-radius:8px;padding:16px 18px"><div style="font-size:11px;color:#F2A0AC;font-weight:700;margin-bottom:6px">오늘의 핵심</div><ol style="margin:0;padding-left:18px;line-height:1.6;font-size:14px">${day.headline3.map((h) => `<li>${esc(h)}</li>`).join('')}</ol></div>` : ''}
 ${day.items.length ? sections : '<p style="color:#5A606B">오늘은 새로 수집된 주요 소식이 없습니다.</p>'}
+${cnHtml}
 <p style="margin-top:28px;font-size:13px"><a href="${site}" style="color:#B3122B">사이트에서 보기 →</a></p>
 <p style="font-size:11px;color:#8A909A">공개 뉴스·공시 기반 개인 요약 · 레노버와 무관합니다</p>
 </div>`;

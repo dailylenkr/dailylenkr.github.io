@@ -75,7 +75,7 @@ const growth = (a, b) => (a == null || b == null || !b ? null : ((a - b) / Math.
 const S = {
   manifest: null, days: new Map(), company: undefined,
   view: 'today', date: null, bg: 'ALL', memOnly: false, tag: null,
-  memPeriod: 7, segMode: 'rev', fy: null, query: '', searchAll: false,
+  memPeriod: 7, segMode: 'rev', cnCo: 'CXMT', cnmem: undefined, cnDays: new Map(), fy: null, query: '', searchAll: false,
 };
 const app = document.getElementById('app');
 
@@ -145,6 +145,7 @@ const VIEWS = [
   ['memory', '메모리 영향', ['M6 6h12v12H6z', 'M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4']],
   ['company', '기업 현황', ['M4 20V10M10 20V4M16 20v-7M22 20H2']],
   ['archive', '아카이브', ['M4 6h16v14H4z', 'M4 10h16M9 3v4M15 3v4']],
+  ['china', '중국 메모리', ['M6 6h12v12H6z']],
 ];
 const go = (hash) => { if (location.hash === hash) route(); else location.hash = hash; };
 
@@ -179,6 +180,7 @@ async function render() {
     const content = S.view === 'memory' ? await viewMemory()
       : S.view === 'company' ? await viewCompany()
       : S.view === 'archive' ? await viewArchive()
+      : S.view === 'china' ? await viewChina()
       : await viewToday();
     app.querySelector('.wrap').firstChild.replaceWith(content);
     app.querySelectorAll('.annual-tbl, .chart-scroll').forEach((el) => { el.scrollLeft = el.scrollWidth; });
@@ -282,6 +284,7 @@ async function viewMemory() {
   const latest = days[0];
   const rows = [];
   days.forEach((d) => d.items.forEach((it) => { if (it.memory) rows.push({ ...it, date: d.date }); }));
+  (await getCnDays(S.memPeriod)).forEach((d) => d.items.forEach((it) => { if (it.lenovo && it.memory) rows.push({ ...it, bg: 'CN', date: d.date }); }));
   rows.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.importance - a.importance));
   const [prodFilter, setProd] = [S.prod || 'ALL', (p) => { S.prod = p; render(); }];
   const shown = rows.filter((r) => prodFilter === 'ALL' || r.memory.products.includes(prodFilter));
@@ -323,7 +326,7 @@ async function viewMemory() {
         h('thead', null, h('tr', null, ['기사', '사업부', '관련 제품', '영향', '해석'].map((t) => h('th', null, t)))),
         h('tbody', null, shown.map((r) => h('tr', null,
           h('td', null, h('div', null, ext(r.url, r.title_ko)), h('div', { class: 'note' }, `${r.source} · ${fmtDate(r.date, false)}`)),
-          h('td', { class: 'inl' }, h('span', { class: `pill ${r.bg}` }, BG[r.bg].name)),
+          h('td', { class: 'inl' }, h('span', { class: `pill ${r.bg}` }, r.bg === 'CN' ? r.company : BG[r.bg].name)),
           h('td', { class: 'inl mem-prod' }, r.memory.products.map((p) => PROD[p] || p).join(' · ')),
           h('td', { class: 'inl' }, h('span', { class: `dir ${IMPACT[r.memory.impact]?.[1]}` }, IMPACT[r.memory.impact]?.[0])),
           h('td', null, r.memory.note_ko))))))
@@ -489,6 +492,88 @@ async function viewCompany() {
           })))),
         h('div', { class: 'tip', style: null }, ' ', c.segment_note || '사업부 영업이익은 레노버가 공시한 사업부 영업이익 기준입니다.'))),
     c.sources?.length > 0 && h('p', { class: 'note' }, '출처: ', c.sources.map((s, i) => [i ? ' · ' : '', ext(s.url, s.label)])),
+  );
+}
+
+/* ---------- China memory (번외) ---------- */
+const BASIS = { company: ['회사 발표', 'co1'], estimate: ['조사기관 추정', 'est'], report: ['언론 보도', 'rep'] };
+const CAT = { tech: '기술', capacity: '생산능력·투자', customer: '고객 채택', regulation: '규제', finance: '재무·IPO', litigation: '소송' };
+async function getCnDays(n) {
+  const out = [];
+  for (const d of (S.manifest.cn_days || []).slice(0, n)) {
+    if (!S.cnDays.has(d)) S.cnDays.set(d, loadEncrypted(`data/cn-days/${d}.enc.json`).catch(() => null));
+    const v = await S.cnDays.get(d);
+    if (v) out.push(v);
+  }
+  return out;
+}
+const basisTag = (b) => { const [l, c] = BASIS[b] || BASIS.report; return h('span', { class: `src ${c}` }, l); };
+function shareChart(points) {
+  const W = 520, H = 180, L = 36, R = 12, T = 18, B = 30;
+  const max = Math.max(5, Math.ceil(Math.max(...points.map((p) => p.num)) / 5) * 5);
+  const svg = svgEl(W, H, '점유율 추이');
+  const x = (i) => L + (W - L - R) * (points.length === 1 ? 0.5 : i / (points.length - 1));
+  const y = (v) => T + (H - T - B) * (1 - v / max);
+  for (let v = 0; v <= max; v += 5) { svg.append(h('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: '#EEF0F2' })); svg.append(h('text', { x: L - 4, y: y(v) + 4, 'text-anchor': 'end' }, v)); }
+  svg.append(h('polyline', { points: points.map((p, i) => `${x(i)},${y(p.num)}`).join(' '), fill: 'none', stroke: '#B3122B', 'stroke-width': 2.5 }));
+  points.forEach((p, i) => {
+    svg.append(h('circle', { cx: x(i), cy: y(p.num), r: 4, fill: '#B3122B' }, h('title', null, `${p.period} ${p.value} · ${p.source}`)));
+    svg.append(h('text', { x: x(i), y: y(p.num) - 9, 'text-anchor': 'middle', class: 'val' }, `${p.num}%`));
+    svg.append(h('text', { x: x(i), y: H - 10, 'text-anchor': 'middle' }, p.period));
+  });
+  svg.append(h('text', { x: L - 4, y: 10, 'text-anchor': 'end' }, '%'));
+  return svg;
+}
+async function viewChina() {
+  if (S.cnmem === undefined) S.cnmem = await loadEncrypted('data/cnmem.enc.json').catch(() => null);
+  if (!S.cnmem) return h('div', { class: 'card empty' }, '중국 메모리 데이터를 준비 중입니다.');
+  const co = S.cnCo;
+  const c = S.cnmem.companies[co];
+  const days = await getCnDays(7);
+  const news = [];
+  days.forEach((d) => d.items.forEach((it) => { if (it.company === co) news.push(it); }));
+  news.sort((a, b) => (a.published < b.published ? 1 : -1));
+  const share = c.metrics.filter((m) => m.series === 'share' && typeof m.num === 'number');
+  const shareSameMetric = share.filter((m) => m.metric === share[share.length - 1]?.metric);
+  return h('div', { class: 'main' },
+    h('div', { class: 'page-head' },
+      h('div', null,
+        h('div', { class: 'kicker' }, '번외 · 공개 정보 기반'),
+        h('h1', { class: 'page-title' }, '중국 메모리 현황'),
+        h('p', { class: 'page-sub' }, `뉴스 매일 · 로드맵·점유율 주 1회 갱신 · 최근 갱신 ${S.cnmem.updated}`)),
+      h('div', { class: 'seg', role: 'group', 'aria-label': '회사' }, ['CXMT', 'YMTC'].map((k) =>
+        h('button', { type: 'button', 'aria-pressed': String(co === k), onclick: () => { S.cnCo = k; render(); } }, `${k} · ${S.cnmem.companies[k].product_line}`)))),
+    h('div', { class: 'grid2' },
+      h('section', { class: 'card' },
+        h('div', { class: 'co' }, h('span', { class: 'nm' }, c.name), h('span', { class: 'zh', lang: 'zh' }, c.name_zh), h('span', { class: 'zh' }, `· ${c.product_line}`)),
+        h('dl', { class: 'kv' }, c.overview.map((o) => [h('dt', null, o.k), h('dd', null, o.v)]))),
+      h('section', { class: 'card' }, h('h2', null, '점유율·생산능력 ', h('span', { class: 'sub' }, '조사기관 공개치')),
+        shareSameMetric.length >= 2 && [h('div', { class: 'note' }, `${shareSameMetric[0].metric} 추이 (${shareSameMetric[0].source})`), h('div', { class: 'chart-scroll sm' }, shareChart(shareSameMetric))],
+        h('div', { class: 'tbl-wrap stack-sm mt' }, h('table', null,
+          h('thead', null, h('tr', null, ['기간', '지표', '값', '근거'].map((t) => h('th', null, t)))),
+          h('tbody', null, c.metrics.map((m) => h('tr', null,
+            h('td', { class: 'inl mono' }, m.period), h('td', { class: 'inl' }, m.metric),
+            h('td', { class: 'inl' }, h('b', null, m.value)),
+            h('td', { class: 'inl' }, basisTag(m.basis), ' ', ext(m.url, `${m.source} ↗`, 'note'))))))))),
+    h('section', { class: 'sec' },
+      h('div', { class: 'sec-h' }, h('h2', null, '기술 로드맵'), h('span', { class: 'sub' }, '근거: '), ['company', 'estimate', 'report'].map(basisTag)),
+      h('div', { class: 'tbl-wrap stack-sm' }, h('table', null,
+        h('thead', null, h('tr', null, ['제품', '단계', '시점', '근거', '출처'].map((t) => h('th', null, t)))),
+        h('tbody', null, c.roadmap.map((r) => h('tr', null,
+          h('td', null, h('b', null, r.product)), h('td', null, r.stage), h('td', { class: 'inl mono' }, r.when),
+          h('td', { class: 'inl' }, basisTag(r.basis)), h('td', { class: 'inl' }, ext(r.url, `${r.source} ↗`, 'note')))))))),
+    h('div', { class: 'grid2' },
+      h('section', { class: 'card' }, h('h2', null, '최근 뉴스 ', h('span', { class: 'sub' }, '최근 7일 수집분')),
+        news.length ? news.map((it) => h('div', { class: 'cn-news' },
+          h('div', { class: 'mem-line' }, h('span', { class: 'mono note' }, fmtPub(it.published)), h('span', { class: 'cat' }, CAT[it.category] || it.category), it.lenovo && h('span', { class: 'lnv' }, '레노버')),
+          h('h3', null, ext(it.url, it.title_ko, 'title-link')),
+          it.lang !== 'ko' && h('div', { class: 'orig', lang: it.lang }, it.title_orig),
+          h('p', null, it.summary_ko),
+          h('div', { class: 'note' }, ext(it.url, `${it.source} 원문 ↗`))))
+          : h('div', { class: 'note' }, '최근 7일간 수집된 소식이 없습니다.')),
+      h('section', { class: 'card' }, h('h2', null, '규제·주요 사건 타임라인'),
+        h('div', { class: 'tl' }, c.timeline.map((t) => h('div', null, h('div', { class: 'd' }, t.date), t.text, ' ', ext(t.url, `(${t.source})`, 'note')))))),
+    h('p', { class: 'note' }, '공개 보도·공시·조사기관 자료만 사용합니다. 조사기관 수치는 추정치이며, 출처마다 기준(매출/출하량)이 다를 수 있습니다. ', h('span', { class: 'lnv' }, '레노버'), ' 표시 기사는 메모리 영향 탭에도 함께 표시됩니다.'),
   );
 }
 

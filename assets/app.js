@@ -524,13 +524,13 @@ async function viewArchive() {
       h('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: '#5A606B', 'stroke-width': 2, 'aria-hidden': 'true' }, h('circle', { cx: 11, cy: 11, r: 7 }), h('path', { d: 'M20 20l-4-4' })),
       input),
     results,
-    dates.length ? [...months.entries()].map(([m, ds]) => h('div', { class: 'month' },
+    dates.length ? h('div', null, [...months.entries()].map(([m, ds]) => h('div', { class: 'month' },
       h('h3', null, `${m.slice(0, 4)}년 ${Number(m.slice(5))}월`),
       h('div', { class: 'daygrid' }, ds.map((d) => {
         const ld = loadedDay(d);
         return h('button', { type: 'button', class: 'daycell', onclick: () => go(`#today/${d}`) },
           h('div', null, fmtDate(d).slice(5)), h('div', { class: 'c' }, ld ? `${ld.items.length}건` : ''));
-      }))))
+      })))))
       : h('div', { class: 'card empty' }, '아직 쌓인 브리핑이 없습니다.'),
   );
   if (S.query) runSearch();

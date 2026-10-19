@@ -375,21 +375,24 @@ function annualChart(rows) {
 }
 
 function segmentChart(rows, mode) {
-  const W = 600, H = 260, L = 44, R = 8, T = 16, B = 40;
+  const W = 600, H = 270, L = 44, R = 8, T = 30, B = 40;
   const bgs = ['IDG', 'ISG', 'SSG'];
   const col = { IDG: '#1F4FD1', ISG: '#E07A1F', SSG: '#0E7C6B' };
   const val = (r, b) => (mode === 'op' ? r[b]?.op : r[b]?.rev) ?? 0;
   const tot = (r) => bgs.reduce((s, b) => s + Math.max(0, val(r, b)), 0);
-  const max = mode === 'share' ? 100 : Math.max(...rows.map(tot), 1) * 1.08;
-  const min = mode === 'op' ? Math.min(0, ...rows.flatMap((r) => bgs.map((b) => val(r, b)))) : 0;
-  const svg = svgEl(W, H, '분기별 사업부 구성');
+  // round grid: 매출 200억$, 영업이익 20억$, 비중 25%
+  const STEP = mode === 'share' ? 25 : mode === 'op' ? 2000 : 20000;
+  const max = mode === 'share' ? 100 : Math.max(STEP, Math.ceil(Math.max(...rows.map(tot), 1) / STEP) * STEP);
+  const minRaw = mode === 'op' ? Math.min(0, ...rows.flatMap((r) => bgs.map((b) => val(r, b)))) : 0;
+  const min = minRaw < 0 ? -Math.ceil(-minRaw / STEP) * STEP : 0;
+  const svg = svgEl(W, H, '사업부 구성');
   const bw = (W - L - R) / rows.length;
   const y = (v) => T + (H - T - B) * (1 - (v - min) / (max - min));
-  [0, 0.5, 1].forEach((f) => {
-    const v = min + (max - min) * f;
-    svg.append(h('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: '#EEF0F2' }));
-    svg.append(h('text', { x: L - 4, y: y(v) + 4, 'text-anchor': 'end' }, mode === 'share' ? `${Math.round(v)}%` : Math.round(v / 100).toLocaleString('ko-KR')));
-  });
+  for (let v = min; v <= max + 1e-9; v += STEP) {
+    svg.append(h('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: v === 0 ? '#C9CFD8' : '#EEF0F2' }));
+    svg.append(h('text', { x: L - 4, y: y(v) + 4, 'text-anchor': 'end' }, mode === 'share' ? `${v}` : (v / 100).toLocaleString('ko-KR')));
+  }
+  svg.append(h('text', { x: L - 4, y: 12, 'text-anchor': 'end' }, mode === 'share' ? '%' : '억$'));
   const step = Math.ceil(rows.length / 6);
   rows.forEach((r, i) => {
     const x = L + i * bw + bw * 0.15, w = bw * 0.7;
@@ -467,7 +470,7 @@ async function viewCompany() {
           h('div', { class: 'seg' }, [['rev', '매출'], ['op', '영업이익'], ['share', '매출 비중']].map(([m, l]) =>
             h('button', { type: 'button', 'aria-pressed': String(S.segMode === m), onclick: () => { S.segMode = m; render(); } }, l)))),
         segmentChart(segRows, S.segMode),
-        h('div', { class: 'tip' }, '단위: 억$')),
+        h('div', { class: 'tip' }, S.segMode === 'share' ? '단위: %' : '단위: 억$')),
       fyRow && h('section', { class: 'sec' },
         h('div', { class: 'sec-h' }, h('h2', null, '사업부별 실적'),
           h('div', { class: 'spacer' }),

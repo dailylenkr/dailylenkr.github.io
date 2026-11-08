@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-09",
   "companies": {
     "CXMT": {
       "name": "CXMT",
@@ -217,7 +217,7 @@
         },
         {
           "k": "상장",
-          "v": "비상장 — 모회사 CCSH의 STAR마켓 IPO 신청이 2026년 8월 21일 접수됨(조달 목표 330억 위안)"
+          "v": "비상장 — 모회사 CCSH의 STAR마켓 IPO 신청이 2026년 8월 21일 접수됨(조달 목표 330억 위안). 2026년 11월 IPO 보류 보도(로이터, 사내 메모 인용) — 2027년 상반기 상장 가능성 보도"
         },
         {
           "k": "주요 주주",
@@ -233,6 +233,14 @@
         }
       ],
       "roadmap": [
+        {
+          "product": "우한 4공장 (300층 이상 낸드, 데이터센터·AI 스토리지)",
+          "stage": "계획 — 내년 착공 예상, 국산 장비 비중 60~70% 목표, 정식 발주 전 (소식통 보도, 회사 미확인)",
+          "when": "2026-11-06 보도",
+          "basis": "report",
+          "source": "Reuters (SRN News 전재)",
+          "url": "https://srnnews.com/exclusive-chinas-top-flash-memory-chipmaker-targets-more-homegrown-tools-for-new-factory-sources-say/"
+        },
         {
           "product": "3D 낸드 300층 이상",
           "stage": "개발 중",
@@ -334,9 +342,29 @@
           "basis": "estimate",
           "source": "SCMP (Counterpoint 인용)",
           "url": "https://www.scmp.com/tech/big-tech/article/3370871/chinese-memory-giant-ymtc-grow-revenue-6-times-faster-peers-ipo-nears-report"
+        },
+        {
+          "period": "2Q26",
+          "metric": "중국 낸드 점유율",
+          "value": "38.5% (2025년 28%)",
+          "basis": "estimate",
+          "source": "Omdia (로이터 인용)",
+          "url": "https://srnnews.com/exclusive-chinas-top-flash-memory-chipmaker-targets-more-homegrown-tools-for-new-factory-sources-say/"
         }
       ],
       "timeline": [
+        {
+          "date": "2026-11-06",
+          "text": "우한 4공장 장비 국산화율 최대 70% 목표, 300층 이상 낸드 생산 계획 보도 (로이터, 소식통 인용)",
+          "source": "Reuters (SRN News 전재)",
+          "url": "https://srnnews.com/exclusive-chinas-top-flash-memory-chipmaker-targets-more-homegrown-tools-for-new-factory-sources-say/"
+        },
+        {
+          "date": "2026-11-04",
+          "text": "상하이 IPO 보류 — 사내 메모 및 소식통 인용, 2027년 상반기 상장 가능성 (로이터)",
+          "source": "Reuters (SRN News 전재)",
+          "url": "https://srnnews.com/exclusive-chinese-chipmaker-ymtc-puts-ipo-on-hold-as-weaker-markets-weigh-sources-say/"
+        },
         {
           "date": "2026-10-13",
           "text": "2분기 낸드 출하량 기준 세계 3위(점유율 16.5%) — Counterpoint",

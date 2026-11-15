@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-16",
   "companies": {
     "CXMT": {
       "name": "CXMT",
@@ -125,10 +125,22 @@
       ],
       "timeline": [
         {
+          "date": "2026-11-12",
+          "text": "제23회 중국국제반도체박람회(IC China 2026)에서 DDR5 서버 모듈·LPDDR6·차량용 DRAM 소개. 부사장 '서버 수요 비중 50% 초과' 언급",
+          "source": "21世纪经济报道",
+          "url": "https://m.21jingji.com/article/20261113/herald/510c070ae2247c2d26b184339b444492.html"
+        },
+        {
           "date": "2026-10-31",
           "text": "실적 설명회: 4F² 기반 6세대 플랫폼 DRAM 엔지니어링 샘플 검증 완료, 다수 대형 고객과 장기공급계약 협상 중, 4분기 매출총이익률 안정 예상",
           "source": "澎湃新闻",
           "url": "https://www.thepaper.cn/newsDetail_forward_34377724"
+        },
+        {
+          "date": "2026-10-31",
+          "text": "자회사 창신메모리제품(허페이) 등록자본 66.61억→110.61억 위안 증액 — 총투자 108억 위안 후공정 DRAM 웨이퍼 테스트 2기 자금",
+          "source": "TrendForce",
+          "url": "https://www.trendforce.com/news/2026/11/12/news-cxmt-completes-multiple-capital-moves-expanding-investment-and-testing-capacity"
         },
         {
           "date": "2026-10-30",
